@@ -1,5 +1,5 @@
 
-data = read.csv("fooddata.csv")
+data = read.csv("foodData.csv")
 
 shinyServer(function(input, output,session) {
   
