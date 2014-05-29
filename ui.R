@@ -43,7 +43,8 @@ shinyUI(navbarPage("Find me a Restaurant!",
                                 
                                 sliderInput(inputId = "fiber_input", 
                                             label = "Fiber (g)", 
-                                            min=0, max=38, value=c(0,38))
+                                            min=0, max=38, value=c(0,38)),
+                                htmlOutput("selectUI")
                                 
                                 
                               ),

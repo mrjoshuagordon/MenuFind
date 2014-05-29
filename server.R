@@ -22,58 +22,48 @@ shinyServer(function(input, output,session) {
     
     
     
+  }) # End dataInput
+  
+  getDrop = reactive({
+    
+    rest = dataInput()$Restaurant
+    
+    
+ 
+    
+    
+  #  if( length( which(  rest %in%  input$foodName)    == T) > 0)   {
+      
+      f.out = c(input$foodName, "All", sort(as.character(rest)))
+      
+   # } else{
+      
+      
+  #    f.out = c("All", as.character(rest))
+ #   }
+    
+    
+  }) #end  getDrop
+  
+  
+  
+  output$selectUI <- renderUI({ 
+    
+    out.food = unique(getDrop())
+    
+    selectInput("foodName", "Select Restaurant", out.food) 
+    
+    
   })
   
   
   
-#   
-#   
-#   dataInput1 = reactive({
-#     
-#     if(length(input$calories_inSlider) == 0){
-#       
-#       
-#       data
-#       
-#     } else{
-#     
-#     
-#     data[which(   
-#       data$Calories   >= min(input$calories_inSlider)
-#       & data$Calories <= max(input$calories_inSlider)
-#       & data$Protein  >= min(input$protein_inSlider) 
-#       & data$Protein  <= max(input$protein_inSlider) 
-# 
-#     ), ]  
-#     
-#     }
-#     
-#     
-#   })
-#   
-  
-    
-  
-  
-#   output$mytable5 = renderDataTable({ 
-#     
-# 
-#   #  data.frame(c(1,2,3))
-# 
-#     dataInput()
-#     
-#     
-# 
-#     
-#   }, options = list(aLengthMenu = c(5, 20, 30), iDisplayLength = 10))
+
   
   
   output$mytable6 = renderDataTable({ 
     
-    
-    #  data.frame(c(1,2,3))
-    
-#data.frame(min(input$calories_inSlider), max(input$calories_inSlider))
+
     
  
     if(nrow(  dataInput() ) ==0){
@@ -84,54 +74,44 @@ shinyServer(function(input, output,session) {
     out  
       
     } else{
-    dataInput()
+      
+      if(length(input$foodName) == 0) {
+        dataInput() 
+      
+      } else{ 
+      
+      if(input$foodName=="All"){
+        
+        dataInput()
+      } else{
+      
+  #  dataInput()[which(dataInput()==input$foodName),]
     
+    
+    if(nrow(    dataInput()[which(dataInput()==input$foodName),] )==0) {
+      
+      out =   data.frame(t(rep("", ncol(data))))
+      names(out) = names(data)
+      out[,1] = "Please Change Your Criteria..."
+      out  
+      
+      
+    } else{
+      
+      
+      dataInput()[which(dataInput()==input$foodName),]
     }
     
-  }, options = list(aLengthMenu = c(5, 20, 30), iDisplayLength = 10))
-  
-#   
-#   
-#   
-#   
-#   output$slider_calories <- renderUI({
-#     
-#   if(length(min(dataInput1()$Calories)>0)){  
-#   
-#     
-#     sliderInput("calories_inSlider", "Slider", min=min(dataInput1()$Calories) , max=max(dataInput1()$Calories), 
-#                 value=c(min(data$Calories),max(data$Calories))
-#                 
-#     )
-#     
-#     
-#   } else{
-#     
-#     
-#     sliderInput("calories_inSlider", "Slider", min=min(data$Calories) , max=max(data$Calories), 
-#                 value=c(min(data$Calories),max(data$Calories))
-#                 
-#     ) 
-#   }
-#   
-#   
-#   
-#   
-#   
-#   }) 
-#   
-#   
-#   
-#   output$slider_protein <- renderUI({
-#     
-#     
-#     sliderInput("protein_inSlider", "Slider", min=min(dataInput1()$Protein) , max=max(dataInput1()$Protein), 
-#                 value=c(min(dataInput1()$Protein),max(dataInput1()$Protein)))
-#   }) 
-#   
-#   
-#   
+    
+      } #end else 2
+    
+    } #else lenght statment
   
   
+    } # end else 1
+    
+  }, options = list(aLengthMenu = c(5, 20, 30), iDisplayLength = 10))  #End output
+
   
-}) 
+  
+}) # end shinyServer
